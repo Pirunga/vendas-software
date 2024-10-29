@@ -19,7 +19,7 @@ def generate_pdf_report(data, output_io=None):
     pdf.set_font('Arial', 'B', 12)
     pdf.cell(100, 10, 'Produto', 1, 0, 'C')
     pdf.cell(50, 10, 'Total de Vendas (R$)', 1, 0, 'C')
-    pdf.cell(40, 10, 'Porcentagem (%)', 1, 1, 'C')  # Nova coluna para porcentagem
+    pdf.cell(40, 10, 'Porcentagem (%)', 1, 1, 'C')
 
     # Total Geral
     total_geral = sum(data.values())
@@ -27,20 +27,20 @@ def generate_pdf_report(data, output_io=None):
     # Dados da Tabela
     pdf.set_font('Arial', size=10)
     for product, total in data.items():
-        porcentagem = (total / total_geral) * 100 if total_geral > 0 else 0  # Cálculo da porcentagem
+        porcentagem = (total / total_geral) * 100 if total_geral > 0 else 0 
         pdf.cell(100, 10, product, 1, 0, 'C')
         pdf.cell(50, 10, f'{total:.2f}', 1, 0, 'C')
-        pdf.cell(40, 10, f'{porcentagem:.2f}', 1, 1, 'C')  # Adicionando porcentagem na tabela
+        pdf.cell(40, 10, f'{porcentagem:.2f}', 1, 1, 'C')
 
     # Total de Vendas
-    pdf.ln(5)  # Espaço antes do total
+    pdf.ln(5)
     pdf.set_font('Arial', 'B', 12)
     pdf.cell(100, 10, 'Total Geral', 1, 0, 'C')
     pdf.cell(50, 10, f'{total_geral:.2f}', 1, 0, 'C')
-    pdf.cell(40, 10, '100.00', 1, 1, 'C')  # Porcentagem total é sempre 100%
+    pdf.cell(40, 10, '100.00', 1, 1, 'C')
 
     # Adicionando rodapé com informações adicionais
-    pdf.set_y(-15)  # Posiciona 15mm do fundo
+    pdf.set_y(-15)
     pdf.set_font('Arial', 'I', 8)
     pdf.cell(0, 10, 'Gerado pelo Sistema de Vendas', 0, 0, 'C')
 
