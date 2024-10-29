@@ -1,8 +1,10 @@
 import csv
 from datetime import datetime
 from flask import Blueprint, request, render_template, redirect, url_for, flash
+
 from app import db
 from app.models import Sale
+from app.utils.analysis import analyze_sales
 
 main = Blueprint('main', __name__)
 
@@ -32,3 +34,9 @@ def upload_csv():
     db.session.commit()
     flash('Arquivo CSV importado com sucesso!', 'success')
     return redirect(url_for('main.index'))
+
+@main.route('/report')
+def report():
+    sales = Sale.query.all()
+    analysis = analyze_sales()
+    return render_template('report.html', sales=sales, analysis=analysis)

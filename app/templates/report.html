@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Relatório de Vendas</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='styles/report.css') }}">
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h1>Relatório de Vendas</h1>
+            <p>Acompanhe as vendas realizadas e faça o download do relatório diário em PDF.</p>
+        </header>
+
+        <section class="actions">
+            <a href="{{ url_for('main.generate_daily_report') }}" class="button download-btn">Baixar Relatório Diário em PDF</a>
+            <a href="{{ url_for('main.index') }}" class="button upload-btn">Voltar para Upload de CSV</a>
+        </section>
+
+        <section class="sales-analysis">
+            <h2>Análise de Vendas</h2>
+            <ul>
+                <li><strong>Total de Vendas (R$):</strong> {{ "{:.2f}".format(analysis.total_sales_value) }}</li>
+                <li><strong>Total de Produtos Vendidos:</strong> {{ analysis.total_products_sold }}</li>
+                <li><strong>Ticket Médio (R$):</strong> {{ "{:.2f}".format(analysis.average_ticket) }}</li>
+                <li><strong>Produto Mais Vendido:</strong> {{ analysis.most_sold_product_name }} ({{ analysis.most_sold_product_quantity }} unidades)</li>
+            </ul>
+        </section>
+
+        <section class="sales-table">
+            <h2>Resumo das Vendas</h2>
+            <table>
+                <thead>
+                    <tr>
+                        <th>Data da Venda</th>
+                        <th>Cliente</th>
+                        <th>Produto</th>
+                        <th>Quantidade</th>
+                        <th>Preço Unitário (R$)</th>
+                        <th>Total da Venda (R$)</th>
+                    </tr>
+                </thead>
+                <tbody id="sales-table-body">
+                    <!-- As linhas de vendas serão carregadas dinamicamente aqui -->
+                </tbody>
+            </table>
+            <div id="loading-message">Carregando mais vendas...</div>
+        </section>
+    </div>
+
+    <!-- Referência ao script externo -->
+    <script src="{{ url_for('static', filename='js/load_sales.js') }}"></script>
+</body>
+</html>
