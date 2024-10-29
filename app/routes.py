@@ -1,10 +1,12 @@
 import csv
-from datetime import datetime
-from flask import Blueprint, request, render_template, redirect, url_for, flash, jsonify
+from datetime import datetime, date
+from flask import Blueprint, request, render_template, redirect, url_for, flash, jsonify, send_file
+from io import BytesIO
 
 from app import db
 from app.models import Sale
 from app.utils.analysis import analyze_sales
+from app.utils.pdf_generator import generate_pdf_report
 
 main = Blueprint('main', __name__)
 
@@ -63,3 +65,16 @@ def get_sales():
         'sales': sales_data,
         'has_next': sales_paginated.has_next
     })
+
+@main.route('/generate_daily_report', methods=['GET'])
+def generate_daily_report():
+    today = date.today()
+    today_str = today.strftime('%Y_%m_%d')
+    daily_sales = Sale.query.filter(Sale.date == today).all()
+    sales_data = {sale.product: sale.total_sale for sale in daily_sales}
+    pdf_output = BytesIO()
+
+    generate_pdf_report(sales_data, pdf_output)
+    pdf_output.seek(0)
+
+    return send_file(pdf_output, as_attachment=True, download_name=f'daily_report_{today_str}.pdf', mimetype="application/pdf")
