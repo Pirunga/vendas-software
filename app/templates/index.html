@@ -1,0 +1,44 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Upload de Vendas</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='styles/index.css') }}">
+</head>
+<body>
+    <div class="container">
+        <!-- Barra de Navegação -->
+        <nav class="navbar">
+            <a href="/" class="logo">Sistema de Vendas</a>
+            <a href="{{ url_for('main.report') }}" class="report-link">Ver Análise de Vendas</a>
+        </nav>
+
+        <!-- Seção de Importação de Arquivo -->
+        <section class="upload-section">
+            <h1>Importar Arquivo de Vendas</h1>
+            <p>Faça o upload de um arquivo CSV para adicionar novas vendas ao sistema.</p>
+
+            <form action="{{ url_for('main.upload_csv') }}" method="post" enctype="multipart/form-data" class="upload-form">
+                <input type="file" name="file" id="file-input" class="file-input" accept=".csv" required>
+                <label for="file-input" class="file-label">Selecionar Arquivo</label>
+                <button type="submit" class="submit-btn">Enviar CSV</button>
+            </form>
+
+            <!-- Placeholder para mensagens de feedback -->
+            <div id="feedback-message" class="feedback-message"></div>
+        </section>
+    </div>
+
+    <script>
+        // Exibir nome do arquivo ao selecionar
+        const fileInput = document.getElementById('file-input');
+        const fileLabel = document.querySelector('.file-label');
+
+        fileInput.addEventListener('change', (event) => {
+            const fileName = event.target.files[0]?.name || "Selecionar Arquivo";
+            fileLabel.textContent = fileName;
+        });
+    </script>
+</body>
+</html>
